@@ -1,3 +1,7 @@
+/*
+- Não consegui implementar a multiplicação dentro da função
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
@@ -8,8 +12,8 @@
 
 struct dados_vetor
 {
-	long int *v;
-	long int n;
+	double *v;
+	double n;
 };
 
 void *dobrar (void* parameters)
@@ -18,17 +22,18 @@ void *dobrar (void* parameters)
     
 	for(int i=0;i < L/4; i++)
 	{
-        p->v[i] = p-> v[i] + p-> v[i];
-	}
-    printf("%ld\n",p->v[0]);
+        //p->v[i] = p->v[i] + p->v[i];
+        p->v[i] = p->v[i] + p->v[i];
+    }
+    printf("Mesmos valores dobrados: %f\n",p->v[0]);
 	return NULL;
 }
 
 int main()
 {
     int i;
-    long int n = 3;
-	long int v[L];
+    double n = 3;
+	double v[L];
     
 	srand(time(NULL));
     
@@ -37,10 +42,7 @@ int main()
 		v[i] = rand() % 100001;
 
 	}
-    printf("%ld\n", v[0]);
-    printf("%ld\n", v[L/4]);
-    printf("%ld\n", v[L/2]);
-    printf("%ld\n", v[3*L/4]);
+
 	struct dados_vetor vs[4];
 	pthread_t thread_id[4];
 	
@@ -48,6 +50,7 @@ int main()
 	{
 		vs[i].v = &v[(L/4)*i];
 		pthread_create(&thread_id[i], NULL, dobrar, &vs[i]);
+        printf("Valor de v[%d]: %f\n", i*L/4, v[i*L/4]);
 	}
     
 	for(i=0;i<4;i++)
